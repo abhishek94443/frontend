@@ -8,6 +8,8 @@ interface PageProps {
 
 import { logToFile } from '@/lib/logger';
 
+import { ThemeInjector } from "@/core/theme/ThemeInjector";
+
 export default async function VendorPage({ params }: PageProps) {
   const { vendorSlug } = await params;
   
@@ -39,6 +41,10 @@ export default async function VendorPage({ params }: PageProps) {
 
   return (
     <main>
+      <ThemeInjector 
+        theme={config.websiteConfig.theme} 
+        fonts={config.websiteConfig.fonts} 
+      />
       <Renderer nodeTree={config.websiteConfig.tree} />
     </main>
   );

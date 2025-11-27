@@ -4,13 +4,87 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Theme Colors (Default: Tide) */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-900: #1e3a8a;
+  
+  --color-neutral-50: #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-900: #111827;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Theme Colors */
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-neutral-50: var(--color-neutral-50);
+  --color-neutral-100: var(--color-neutral-100);
+  --color-neutral-200: var(--color-neutral-200);
+  --color-neutral-400: var(--color-neutral-400);
+  --color-neutral-500: var(--color-neutral-500);
+  --color-neutral-600: var(--color-neutral-600);
+  --color-neutral-700: var(--color-neutral-700);
+  --color-neutral-900: var(--color-neutral-900);
+  
+  /* Sans */
   --font-sans: var(--font-geist-sans);
+  --font-work-sans: var(--font-work-sans);
+  --font-inter: var(--font-inter);
+  --font-roboto: var(--font-roboto);
+  --font-open-sans: var(--font-open-sans);
+  --font-lato: var(--font-lato);
+  --font-montserrat: var(--font-montserrat);
+  --font-poppins: var(--font-poppins);
+  --font-source-sans: var(--font-source-sans);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-nunito: var(--font-nunito);
+  --font-raleway: var(--font-raleway);
+  --font-outfit: var(--font-outfit);
+  --font-manrope: var(--font-manrope);
+  --font-dm-sans: var(--font-dm-sans);
+  --font-plus-jakarta: var(--font-plus-jakarta);
+  --font-figtree: var(--font-figtree);
+
+  /* Serif */
+  --font-serif: var(--font-playfair); /* Default serif */
+  --font-playfair: var(--font-playfair);
+  --font-merriweather: var(--font-merriweather);
+  --font-lora: var(--font-lora);
+  --font-source-serif: var(--font-source-serif);
+  --font-crimson-text: var(--font-crimson-text);
+  --font-libre-baskerville: var(--font-libre-baskerville);
+  --font-cormorant: var(--font-cormorant);
+  --font-eb-garamond: var(--font-eb-garamond);
+  --font-crimson-pro: var(--font-crimson-pro);
+  --font-libre-caslon: var(--font-libre-caslon);
+
+  /* Mono */
   --font-mono: var(--font-geist-mono);
+  --font-jetbrains: var(--font-jetbrains);
+  --font-fira-code: var(--font-fira-code);
+  --font-source-code: var(--font-source-code);
+  --font-roboto-mono: var(--font-roboto-mono);
+  --font-ibm-plex-mono: var(--font-ibm-plex-mono);
+  --font-space-mono: var(--font-space-mono);
+  --font-inconsolata: var(--font-inconsolata);
 }
 
 @media (prefers-color-scheme: dark) {

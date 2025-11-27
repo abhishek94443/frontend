@@ -36,14 +36,57 @@ export interface SiteNode {
   children?: SiteNode[];
 }
 
+export interface ThemeColors {
+  primary: string;
+  primaryText: string;
+  secondary: string;
+  secondaryText: string;
+  accent: string;
+  accentText: string;
+  background: string;
+  text: string;
+  card: string;
+  cardText: string;
+  popover: string;
+  popoverText: string;
+  muted: string;
+  mutedText: string;
+  destructive: string;
+  destructiveText: string;
+  border: string;
+  input: string;
+  focusRing: string;
+  chart: {
+    chart1: string;
+    chart2: string;
+    chart3: string;
+    chart4: string;
+    chart5: string;
+  };
+}
+
+export interface ThemeConfig {
+  name: string;
+  tokens: ThemeColors;
+}
+
+export interface FontConfig {
+  sans: string;
+  serif: string;
+  mono: string;
+}
+
+export interface WebsiteConfig {
+  schemaVersion: string;
+  theme?: ThemeConfig;
+  fonts?: FontConfig;
+  tree: SiteNode[];
+}
+
 export interface VendorConfig {
   name: string;
   slug: string;
-  websiteConfig: {
-    tree?: SiteNode[];
-    theme?: any;
-    meta?: any;
-  } | null;
+  websiteConfig: WebsiteConfig | null;
 }
 
 export interface ApiResponse<T> {

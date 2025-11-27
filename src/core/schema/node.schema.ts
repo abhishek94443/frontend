@@ -25,6 +25,8 @@ const BaseStylesShape = {
   textAlign: z.enum(['left', 'center', 'right', 'justify']).optional(),
   flex: z.enum(['1', 'auto', 'initial', 'none']).optional(),
   flexBasis: z.enum(['full', '1/2', '1/3', '2/3', '1/4', '3/4', 'auto']).optional(),
+  flexDirection: z.enum(['row', 'column', 'row-reverse', 'column-reverse']).optional(),
+  direction: z.enum(['row', 'column', 'row-reverse', 'column-reverse']).optional(), // Alias
   flexGrow: z.boolean().optional(),
   flexShrink: z.boolean().optional(),
   borderWidth: makeEnum(tokens.border.width).optional(),

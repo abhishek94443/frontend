@@ -1,16 +1,86 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { 
+  Geist, 
+  Geist_Mono,
+  // Sans
+  Work_Sans,
+  Inter,
+  Roboto,
+  Open_Sans,
+  Lato,
+  Montserrat,
+  Poppins,
+  Source_Sans_3,
+  Space_Grotesk,
+  Nunito,
+  Raleway,
+  Outfit,
+  Manrope,
+  DM_Sans,
+  Plus_Jakarta_Sans,
+  Figtree,
+  // Serif
+  Playfair_Display,
+  Merriweather,
+  Lora,
+  Source_Serif_4,
+  Crimson_Text,
+  Libre_Baskerville,
+  Cormorant_Garamond,
+  EB_Garamond,
+  Crimson_Pro,
+  Libre_Caslon_Text,
+  // Mono
+  JetBrains_Mono,
+  Fira_Code,
+  Source_Code_Pro,
+  Roboto_Mono,
+  IBM_Plex_Mono,
+  Space_Mono,
+  Inconsolata
+} from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// --- Sans Serif ---
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const workSans = Work_Sans({ variable: "--font-work-sans", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const roboto = Roboto({ variable: "--font-roboto", weight: ["100", "300", "400", "500", "700", "900"], subsets: ["latin"] });
+const openSans = Open_Sans({ variable: "--font-open-sans", subsets: ["latin"] });
+const lato = Lato({ variable: "--font-lato", weight: ["100", "300", "400", "700", "900"], subsets: ["latin"] });
+const montserrat = Montserrat({ variable: "--font-montserrat", subsets: ["latin"] });
+const poppins = Poppins({ variable: "--font-poppins", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], subsets: ["latin"] });
+const sourceSans = Source_Sans_3({ variable: "--font-source-sans", subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
+const raleway = Raleway({ variable: "--font-raleway", subsets: ["latin"] });
+const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
+const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
+const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"] });
+const plusJakarta = Plus_Jakarta_Sans({ variable: "--font-plus-jakarta", subsets: ["latin"] });
+const figtree = Figtree({ variable: "--font-figtree", subsets: ["latin"] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// --- Serif ---
+const playfair = Playfair_Display({ variable: "--font-playfair", subsets: ["latin"] });
+const merriweather = Merriweather({ variable: "--font-merriweather", weight: ["300", "400", "700", "900"], subsets: ["latin"] });
+const lora = Lora({ variable: "--font-lora", subsets: ["latin"] });
+const sourceSerif = Source_Serif_4({ variable: "--font-source-serif", subsets: ["latin"] });
+const crimsonText = Crimson_Text({ variable: "--font-crimson-text", weight: ["400", "600", "700"], subsets: ["latin"] });
+const libreBaskerville = Libre_Baskerville({ variable: "--font-libre-baskerville", weight: ["400", "700"], subsets: ["latin"] });
+const cormorant = Cormorant_Garamond({ variable: "--font-cormorant", weight: ["300", "400", "500", "600", "700"], subsets: ["latin"] });
+const ebGaramond = EB_Garamond({ variable: "--font-eb-garamond", subsets: ["latin"] });
+const crimsonPro = Crimson_Pro({ variable: "--font-crimson-pro", subsets: ["latin"] });
+const libreCaslon = Libre_Caslon_Text({ variable: "--font-libre-caslon", weight: ["400", "700"], subsets: ["latin"] });
+
+// --- Mono ---
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
+const firaCode = Fira_Code({ variable: "--font-fira-code", subsets: ["latin"] });
+const sourceCode = Source_Code_Pro({ variable: "--font-source-code", subsets: ["latin"] });
+const robotoMono = Roboto_Mono({ variable: "--font-roboto-mono", subsets: ["latin"] });
+const ibmPlexMono = IBM_Plex_Mono({ variable: "--font-ibm-plex-mono", weight: ["100", "200", "300", "400", "500", "600", "700"], subsets: ["latin"] });
+const spaceMono = Space_Mono({ variable: "--font-space-mono", weight: ["400", "700"], subsets: ["latin"] });
+const inconsolata = Inconsolata({ variable: "--font-inconsolata", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,11 +92,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const fonts = [
+    // Sans
+    geistSans, workSans, inter, roboto, openSans, lato, montserrat, poppins, 
+    sourceSans, spaceGrotesk, nunito, raleway, outfit, manrope, dmSans, 
+    plusJakarta, figtree,
+    // Serif
+    playfair, merriweather, lora, sourceSerif, crimsonText, libreBaskerville, 
+    cormorant, ebGaramond, crimsonPro, libreCaslon,
+    // Mono
+    geistMono, jetbrains, firaCode, sourceCode, robotoMono, ibmPlexMono, 
+    spaceMono, inconsolata
+  ];
+
+  const fontVariables = fonts.map(f => f.variable).join(" ");
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${fontVariables} antialiased`}>
         {children}
       </body>
     </html>
