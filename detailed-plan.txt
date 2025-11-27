@@ -1,0 +1,607 @@
+npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --yes
+
+You are helping build Kinesis, a multi-tenant SaaS appointment booking platform
+for India. Here's what you need to know:
+BACKEND (Spring Boot + PostgreSQL):(already ready)
+
+Multi-tenant database with vendor_id isolation 
+JWT authentication with role-based access (VENDOR_OWNER, STAFF, CUSTOMER)
+REST APIs for booking, resources (STAFF/ROOM/EQUIPMENT), services, payments
+Razorpay payment integration with webhook support
+Redis caching for availability slots (2-min TTL)
+Slot locking mechanism to prevent double bookings
+
+
+FRONTEND (Next.js 14 + React)public side of vendor:
+vendor Admin panel in Angular (already ready) vendorA.lvh.me/admin
+
+vendor subdomai website in Next.js  vendorA.lvh.me [this is what we are creating here]
+Node-based website builder (50+ node types: section, flex, text, image,
+booking-calendar, etc.)
+Subdomain routing (vendorA.kinesis.app → dynamic site)
+SSG/ISR for vendor websites (5-min revalidation)
+Embedded booking widget with real-time availability
+Admin panel for vendors to manage services, bookings, and customize website
+
+
+step 1 localhost:8080/api/public/vendor/check/{{vendor_slug}}
+for vendorA.lvh.me slug is vendorA 
+request 
+localhost:8080/api/public/vendor/check/vendorA
+response 
+{
+
+    success: true,
+    data: {
+        vendor_name: "Vendor A",
+        vendor_slug: "vendorA",
+        website_config: {
+            
+        }
+    }
+}
+before loading or rendering any this we will extract slug call this api and check 
+if slug is present then website config have json node tree we will rendor that
+ARCHITECTURE:
+
+Node tree stored as JSONB in vendors.website_config
+Renderer walks tree and maps nodes to React adapters
+BookingCalendarAdapter fetches data from Spring Boot APIs
+Theme tokens provide design consistency across vendors
+Multi-layer caching (CDN → Next.js → Redis → PostgreSQL)
+
+KEY CHALLENGES:
+
+Prevent double bookings (Redis locks)
+Fast page loads (<2s LCP) with SSG + CDN
+Support complex scheduling (multi-resource, group bookings)
+Vendor isolation (every query filtered by vendor_id)
+
+CURRENT STATUS:
+
+Backend: 75% complete (needs webhook, caching, website APIs)
+Frontend: 0% complete (needs entire renderer + booking widget)
+Database: 100% complete (excellent schema)
+
+TARGET MARKET:
+
+Indian small businesses (salons, dentists, gyms, consultants)
+Pricing: ₹499-₹999/month
+Goal: 2,500 customers in Year 1 (₹16L MRR)
+
+
+
+
+
+Full design doc — what this src/ schema gives you, why it’s special, and exactly how the builder works (deep, actionable, review-ready)
+
+Fantastic — below is a complete, extremely detailed explanation of the folder/schema you pasted: what makes it special, how it stays fast/scalable/extendable, how it can replace a human developer for most vendor websites, the exact prompt formats to give the AI, example AI outputs, how the system serves each vendor separately, what’s missing besides adding nodes, and a thorough list of failure modes + mitigations.
+
+I wrote this so you can hand it to an architect / product manager and they can run with it.
+
+Table of contents
+
+Overview: one-line summary
+
+Why this structure is special (principles)
+
+How it scales, stays efficient, and remains extendable
+
+How it replaces experienced web developers (scope + limits)
+
+Detailed walk-through of each folder / module (what it contains & responsibilities)
+
+The input/output contract: node JSON schema & runtime behavior
+
+Prompt formats to feed AI (system/user/few-shot + function schema)
+
+Example AI outputs (realistic node JSON snippets)
+
+How the builder serves each vendor separately (multi-tenant model, isolation, customization)
+
+What else you must add (beyond nodes) — infra, ops, product, and legal pieces
+
+Error modes, performance pitfalls, and robust mitigations
+
+Verification, testing and quality gating (must-have checks)
+
+Final checklist / next steps
+
+1 — Overview (one sentence)
+
+This repo layout implements a single-source-of-truth Node DSL + deterministic renderer + visual editor + AI integration layer, so a vendor-provided node-tree JSON (from the AI) is validated, converted by adapters into high-quality React/Next pages, and published as optimized SSG/SSR sites — minimizing bespoke engineering and enabling highly automated site creation.
+
+2 — Why this structure is special — core design principles
+
+Single Source of Truth (Node Tree): UI + logic are represented as JSON. Editor, renderer, publisher, and validator all read/write the same representation → no drift between preview and production.
+
+Adapter pattern: each node type has a thin adapter that maps the abstract node to concrete JSX/CSS/behavior. Keeps implementation details centralized and testable.
+
+Tokenized design system: styles are driven by tokens (colors, spacing, fonts, breakpoints). AI sets tokens, renderer implements real CSS — consistent, brand-safe outputs.
+
+Constrained DSL + Schema: AI cannot output random HTML/CSS—only allowed node types and props (JSON Schema). Deterministic outputs drastically reduce errors.
+
+Separation of concerns: AI decides what to show; runtime decides how to implement it (HTML/CSS/JS). This prevents broken pages or unsafe code.
+
+Pluggable engines: animationEngine, responsiveEngine, dataResolver are explicit modules — replaceable/improvable in isolation.
+
+Preview parity: editor uses same renderer as public site so what you edit is what you publish (no CSS drift).
+
+Versioned content: nodes/pages are versioned for rollback and auditing.
+
+3 — How it is scalable, fast, efficient, extendable
+Scalability (architectural reasons)
+
+Stateless rendering at edge: Node tree → SSG static HTML (Next.js) for most pages. Dynamic nodes use serverless endpoints. This allows edge caching & global CDN.
+
+Chunked adapters: small, independent React components (adapters) are easy to test and horizontally scale in CI/CD and runtime.
+
+DB + object store separation: store JSON + metadata in Postgres (fast queries/ACID) and media in S3/Cloudinary (CDN friendly).
+
+Incremental rebuilds: publish pipeline builds only changed pages using incremental rendering (Next.js ISR or SSG per page).
+
+Cache invalidation hooks: publish triggers CDN invalidation for changed assets only.
+
+Performance (runtime reasons)
+
+SSG for static pages: landing pages build ahead-of-time (fast TTFB).
+
+Hydration after HTML: push minimal JS for interactive nodes only (defer non-critical bundles).
+
+Code-splitting & adapter-level bundles: adapters loaded on demand; pages only import adapters they use.
+
+Animation engine uses CSS where possible: CSS transitions/transform with GPU-accelerated properties (transform/opacity). JS used only for triggers.
+
+Image optimization: automatic responsive srcset + AVIF/WebP conversion on upload.
+
+Efficiency (developer & platform)
+
+Small adapter surface: adding a node is add-schema + add-adapter + tests — predictable work.
+
+AI-first workflow: allow non-developers to specify business needs; reduces dev backlog for small sites.
+
+Reusability: same adapter used across vendors, so bug fixes/improvements help all sites instantly.
+
+Extendability (how to add features)
+
+Add new node: create Node definition under core/nodes, add JSON Schema, add adapter under renderer/adapters, add optional editor panel under editor/panels, write unit tests, update prompt templates if needed.
+
+Replace engine module: animationEngine or responsiveEngine are modular and can be swapped without touching node DSL.
+
+Plugins / marketplace: adapters can be packaged as plugins (premium animations, analytics connectors).
+
+4 — How this structure can replace experienced web developers (and limits)
+What it can replace reliably
+
+Routine business websites: landing pages, lead-capture sites, service pages, booking/scheduling pages, small ecommerce, blogs.
+
+Typical UX patterns: hero, features, pricing, staff pages, contact/lead forms, calendars, simple dashboards.
+
+Styling & responsive behavior: token-driven themes ensure consistent quality without manual CSS.
+
+Repetitive integrations: Stripe, Google Calendar, Zoom, Lottie animations — standardized adapters do this reliably.
+
+What still may need human developers
+
+Complex, one-off web apps (custom back-office logic, unique complex web-app features, real-time collaboration, complex multi-step financial flows).
+
+Highly custom animations beyond supported presets (unless you add new node + adapter).
+
+Enterprise compliance customizations (on-prem, special data residency or vendor-specific legal flows).
+
+Deep accessibility remediation for legacy content — builder can automate many checks, but humans may need final signoff in sensitive workflows.
+
+Overall: This architecture covers ~80–95% of typical vendor needs. For the remaining 5–20% you provide extension points and human-in-the-loop.
+
+5 — Detailed walk-through of each folder/module (responsibility, patterns, key APIs)
+
+I’ll list each top folder and the contract they provide.
+
+app/ (Next.js app router)
+
+Responsibility: route handling for public site rendering, static generation entry points and serverless APIs used by dynamic nodes.
+
+Key file: app/[siteId]/page.tsx — loads node tree and calls <PageRenderer nodeTree />.
+
+Important: keep server-side data fetching minimal and cacheable.
+
+core/nodes/
+
+Responsibility: canonical Node Type declarations and TypeScript interfaces.
+
+Each XNode.ts exports:
+
+Node type name (type: "flip-image")
+
+Props interface (TS)
+
+Default props & allowed enums
+
+Serialization helper (if needed)
+
+This is the authoritative schema for all nodes.
+
+core/schema/
+
+Responsibility: JSON Schema (Ajv) or Zod validators for all node types.
+
+Exposes validateNodeTree(nodeTree): ValidationResult.
+
+Use this both in editor and before publish.
+
+core/renderer/
+
+index.tsx:
+
+exposes renderNode(node, context) and renderTree(nodeTree, context)
+
+context contains theme tokens, site config, runtime hooks
+
+adapters/:
+
+one adapter per node
+
+adapter contract: function Adapter({node, children, context}) => JSX
+
+Adapters are pure (no side-effects) where possible; side-effects handled by runtime/ modules.
+
+engine/:
+
+styleConverter.ts maps tokenized styles object → inline styles or CSS classes, and generates media queries.
+
+animationEngine.ts maps animator props → CSS classes + runtime triggers (IntersectionObserver).
+
+dataResolver.ts resolves api-block and repeater by fetching data (with caching) and returning arrays for render.
+
+core/theme/
+
+Exposes token map:
+
+tokens.ts: { primary: '#0a74ff', spacing: {xs:4, sm:8, ...}, fonts: {...} }
+
+breakpoints.ts: { sm: 480, md: 768, lg: 1024 }
+
+animations.ts: list of presets each with CSS keyframes + parameters
+
+ThemeProvider (under providers/) supplies tokens to renderer.
+
+editor/
+
+EditorRenderer.tsx uses same renderNode but in sandbox (iframe or shadow DOM) for parity.
+
+NodeTree.tsx shows tree and selection.
+
+panels/* provide UI to edit node props — these write back to node tree JSON.
+
+store/editorStore.ts holds current editing node tree, undo/redo stack, publish state.
+
+ai/
+
+Contains prompt templates and callGPT.ts — but in this focused plan you said AI may supply node JSON; this folder is still useful to keep the prompt templates and node postprocessors for when you want to re-run or refine generation.
+
+parser/nodeValidator.ts calls the JSON Schema and outputs deterministic error messages that the frontend/editor can show to vendors.
+
+booking/ and ecommerce/
+
+Runtime components and hooks for standard dynamic use-cases. They consume site config and connect to backend APIs.
+
+lib/ and providers/
+
+lib/ utilities (fetch, storage, cookies). Keep side-effect free helpers here.
+
+providers/ expose common contexts (site metadata, theme tokens, animation settings).
+
+types/
+
+Single source of types used across codebase. Keep in sync with JSON Schema.
+
+6 — Input / Output contract: node JSON schema & runtime behavior
+Minimal Node JSON contract (example)
+{
+  "id": "uuid",
+  "type": "section",
+  "props": { "role": "hero", "container": "full" },
+  "styles": {
+    "spacing": { "p": "lg" },
+    "typography": { "size": "xl" },
+    "responsive": {
+      "md": { "typography": { "size": "lg" } }
+    }
+  },
+  "logic": {
+    "visibility": "true",
+    "bind": null
+  },
+  "children": [ /* nodes */ ]
+}
+
+Core validation rules
+
+type must be one of defined node types (enum).
+
+props must match node props schema.
+
+styles can only reference token names or allowed numeric units.
+
+children must be an array (empty allowed).
+
+No raw JS or CSS strings allowed (script node is explicit and sandboxed).
+
+Runtime behavior
+
+Renderer reads node tree, validates, then maps to adapters.
+
+styleConverter resolves tokens → CSS class names or inline style objects.
+
+animationEngine binds triggers after hydration.
+
+dataResolver runs async for api-block/repeater and the renderer shows skeletons while resolving.
+
+For publishing, builder serializes final HTML + critical CSS + metadata (SEO node → meta tags + structured data).
+
+7 — Prompt formats to give AI (system + user + function schema)
+
+Use three-stage prompts: Planner → Section Generator → Content Fill. Use function-calling (JSON schema) for guaranteed structured output.
+
+System message (example)
+You are an assistant that outputs ONLY the Node JSON conforming to the provided JSON Schema. Allowed nodes: [list]. Allowed tokens: [primary, neutral,...]. Do not output text aside from JSON.
+
+Planner (user)
+Business: "HealWell Physiotherapy"
+Primary goal: Book appointments
+Tone: professional, warm
+Brand color: #0a74ff
+Output: A JSON array of sections with type and short description (not full nodes).
+
+Section Generator (user)
+Given the planner output and allowed nodes, generate the node tree for each section. Use only node types: section, flex, text, image, button, booking-calendar, seo, animator, flip-image, hover-text, repeater.
+Return JSON: { "tree": [ ... nodes ... ] }
+
+Content Fill (user)
+Fill in textual content (hero headline, descriptions) and alt texts. Use brand tone. Keep text length <= 120 characters for hero.
+
+Function schema / response_format (example) — send with GPT call
+
+Provide a JSON Schema that forces structure:
+
+{
+  "type": "object",
+  "properties": {
+    "tree": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Node" }
+    }
+  },
+  "required": ["tree"],
+  "definitions": {
+    "Node": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["section","flex","text","image","button", "..."] },
+        "props": { "type": "object" },
+        "styles": { "type": "object" },
+        "children": { "type": "array", "items": { "$ref": "#/definitions/Node" } }
+      },
+      "required": ["id","type"]
+    }
+  }
+}
+
+
+Important: call with temperature:0 for deterministic structure output, and separate creative content generation calls with small temperature if you want creative copy variants.
+
+8 — Example AI outputs (hero + flip + hover text + booking modal)
+{
+  "tree": [
+    {
+      "id": "sec-hero",
+      "type": "section",
+      "props": { "role": "hero", "container": "full" },
+      "styles": { "spacing": { "p": "xl" }, "background": { "color":"primary-50" } },
+      "children": [
+        {
+          "id": "row-hero",
+          "type": "flex",
+          "props": { "direction": "row", "gap": "24", "align": "center" },
+          "children": [
+            {
+              "id": "hero-text",
+              "type": "hover-text",
+              "props": { "defaultText": "HealWell Physiotherapy", "hoverText":"Move Better. Feel Better." },
+              "styles": { "typography": { "size": "54px", "weight": 700 }, "responsive": { "sm": { "typography": { "size": "32px" } } } }
+            },
+            {
+              "id": "hero-image",
+              "type": "flip-image",
+              "props": { "frontSrc": "/assets/physio-front.png", "backSrc": "/assets/physio-back.png", "duration": 600 },
+              "styles": { "width": "360px", "height": "360px" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "booking-modal",
+      "type": "modal",
+      "props": { "id": "bookingModal", "closable": true },
+      "children": [
+        { "id": "booking-cal", "type": "booking-calendar", "props": { "serviceId": "svc-physio-1", "timezone": "Asia/Kolkata" } }
+      ]
+    }
+  ]
+}
+
+
+This JSON is validated and then passed to the renderer.
+
+9 — How the builder serves each vendor separately (multi-tenant model)
+Data model per vendor
+
+sites table: siteId, ownerId, domain, themeTokens, publishedVersion
+
+pages table: pageId, siteId, slug, nodeTree (JSON), meta
+
+media bucket per site (or S3 prefix)
+
+secrets per site (API keys for Stripe/Zoom, encrypted in Vault)
+
+Isolation & customization
+
+Runtime config: at render/preview time, pass siteContext (tokens, integrations) to adapters.
+
+Namespacing of CSS: adapter renders components with per-site prefix or scoped CSS modules to prevent cross-site leaks.
+
+Per-site plugin list: allow vendors to enable/disable connectors (GoogleAnalytics, Hotjar).
+
+Tenant-based resource limits: plan-based quotas (pages, bookings/month, AI credits).
+
+Deployment
+
+Sites are either:
+
+multi-tenant served by same Next.js app (siteId route), or
+
+exported as static bundle per site for custom hosting.
+
+Use per-site caching keys so CDN invalidation only affects that vendor.
+
+
+
+
+Complete structure
+⭐ FINAL FOLDER STRUCTURE (React + Node Renderer + Editor + Runtime)
+
+src/
+│
+├── app/                          # Next.js app router (public website rendering)
+│   ├── [siteId]/                 # Dynamic site pages
+│   │   └── page.tsx
+│   ├── api/                      # API routes (optional)
+│   └── globals.css               # Base styles
+│
+├── core/                         # Heart of the system
+│   ├── nodes/                    # Node Definitions (schema + props)
+│   │   ├── index.ts
+│   │   ├── SectionNode.ts
+│   │   ├── FlexNode.ts
+│   │   ├── GridNode.ts
+│   │   ├── TextNode.ts
+│   │   ├── ImageNode.ts
+│   │   ├── ButtonNode.ts
+│   │   ├── FormNode.ts
+│   │   ├── InputNode.ts
+│   │   ├── VideoNode.ts
+│   │   ├── IconNode.ts
+│   │   ├── LottieNode.ts
+│   │   ├── HoverTextNode.ts
+│   │   ├── FlipImageNode.ts
+│   │   ├── AnimatorNode.ts
+│   │   ├── ScrollAnimateNode.ts
+│   │   ├── ParallaxNode.ts
+│   │   ├── TypewriterNode.ts
+│   │   ├── PricingCardNode.ts
+│   │   ├── RepeaterNode.ts
+│   │   ├── ConditionNode.ts
+│   │   ├── ApiBlockNode.ts
+│   │   ├── BookingCalendarNode.ts
+│   │   ├── SpriteAnimationNode.ts
+│   │   └── ...total 50
+│   │
+│   ├── schema/                   # JSON-Schema for node types
+│   │   ├── NodeSchema.ts
+│   │   ├── PropsSchema.ts
+│   │   └── StylesSchema.ts
+│   │
+│   ├── renderer/                 # Main Renderer
+│   │   ├── index.tsx             # renderNode()
+│   │   ├── adapters/             # Mapping node → React Component
+│   │   │   ├── SectionAdapter.tsx
+│   │   │   ├── FlexAdapter.tsx
+│   │   │   ├── TextAdapter.tsx
+│   │   │   ├── ImageAdapter.tsx
+│   │   │   ├── HoverTextAdapter.tsx
+│   │   │   ├── FlipImageAdapter.tsx
+│   │   │   ├── AnimatorAdapter.tsx
+│   │   │   ├── BookingCalendarAdapter.tsx
+│   │   │   └── ...50+
+│   │   ├── engine/               # Core logic
+│   │   │   ├── animationEngine.ts
+│   │   │   ├── responsiveEngine.ts
+│   │   │   ├── styleConverter.ts
+│   │   │   ├── dataResolver.ts   # api-block, repeater
+│   │   │   └── conditionEngine.ts
+│   │
+│   └── theme/                    # Global styling system
+│       ├── tokens.ts             # color, font, spacing, shadows…
+│       ├── breakpoints.ts
+│       ├── animations.ts
+│       └── globalStyles.css
+│
+├── editor/                       # Full Website Editor (drag-drop)
+│   ├── canvas/                   # Editable rendering environment
+│   │   └── EditorRenderer.tsx    # like preview
+│   ├── panels/                   # Right side panels
+│   │   ├── StylePanel.tsx
+│   │   ├── NodePanel.tsx
+│   │   ├── AnimationPanel.tsx
+│   │   ├── ResponsivePanel.tsx
+│   │   └── ContentPanel.tsx
+│   ├── tree/                     # Node Tree
+│   │   └── NodeTree.tsx
+│   ├── drag/                     # Drag-n-drop logic
+│   │   └── useDrag.ts
+│   ├── store/                    # Zustand / Redux
+│   │   └── editorStore.ts
+│   └── utils/                    # Clipboard, undo/redo
+│       ├── undo.ts
+│       ├── redo.ts
+│       └── clipboard.ts
+│
+├── ai/                           # GPT integration layer
+│   ├── prompts/                  # All prompt templates
+│   │   ├── siteGeneration.prompt.ts
+│   │   ├── section.prompt.ts
+│   │   ├── rewrite.prompt.ts
+│   │   ├── animation.prompt.ts
+│   │   └── seo.prompt.ts
+│   ├── parser/
+│   │   ├── nodePostProcessor.ts
+│   │   ├── nodeValidator.ts
+│   │   └── nodeNormalizer.ts
+│   ├── gpt/
+│   │   └── callGPT.ts            # unified GPT call function
+│   └── examples/                 # few-shot training
+│       ├── hero.json
+│       ├── pricing.json
+│       ├── animation.json
+│       └── about.json
+│
+├── booking/                      # Booking engine (frontend logic)
+│   ├── hook/useBooking.ts
+│   ├── components/BookingCalendar.tsx
+│   ├── components/SlotPicker.tsx
+│   └── components/StaffSelector.tsx
+│
+├── ecommerce/                    # Optional e-commerce components
+│   ├── ProductCard.tsx
+│   ├── CartDrawer.tsx
+│   └── CheckoutButton.tsx
+│
+├── lib/                          # Utilities
+│   ├── utils.ts
+│   ├── fetcher.ts
+│   ├── storage.ts
+│   └── logger.ts
+│
+├── providers/                    # Context providers
+│   ├── SiteProvider.tsx
+│   ├── ThemeProvider.tsx
+│   ├── AnimationProvider.tsx
+│   └── ResponsiveProvider.tsx
+│
+└── types/                        # TypeScript types
+    ├── Node.ts
+    ├── Props.ts
+    ├── Styles.ts
+    └── Site.ts

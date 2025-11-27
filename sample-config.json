@@ -1,0 +1,333 @@
+{
+  "name": "Sunshine Dental Clinic",
+  "slug": "sunshine-dental",
+  "websiteConfig": {
+    "schemaVersion": "1.0.0",
+    "tree": [
+      {
+        "id": "hero-section",
+        "type": "section",
+        "styles": {
+          "background": "bg-brand-50",
+          "padding": "3xl"
+        },
+        "children": [
+          {
+            "id": "hero-container",
+            "type": "container",
+            "props": {
+              "maxWidth": "xl",
+              "center": true
+            },
+            "styles": {
+              "padding": "md"
+            },
+            "children": [
+              {
+                "id": "hero-flex",
+                "type": "flex",
+                "props": {
+                  "direction": "row",
+                  "align": "center",
+                  "justify": "between",
+                  "wrap": false
+                },
+                "styles": {
+                  "gap": "xl",
+                  "responsive": {
+                    "md": {
+                      "flex": "1",
+                      "flexDirection": "column",
+                      "gap": "lg"
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "id": "hero-text-col",
+                    "type": "flex",
+                    "props": {
+                      "direction": "column"
+                    },
+                    "styles": {
+                      "gap": "md",
+                      "flexBasis": "1/2",
+                      "responsive": {
+                        "md": {
+                          "flexBasis": "full",
+                          "alignItems": "center",
+                          "textAlign": "center"
+                        }
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": "hero-title",
+                        "type": "text",
+                        "props": {
+                          "tag": "h1",
+                          "content": "Modern Dental Care for Your Family"
+                        },
+                        "styles": {
+                          "typography": "display-sm",
+                          "color": "brand-900"
+                        }
+                      },
+                      {
+                        "id": "hero-desc",
+                        "type": "text",
+                        "props": {
+                          "tag": "p",
+                          "content": "Experience painless treatments and a brighter smile with our state-of-the-art technology."
+                        },
+                        "styles": {
+                          "typography": "lead",
+                          "color": "brand-700"
+                        }
+                      },
+                      {
+                        "id": "hero-cta",
+                        "type": "button",
+                        "props": {
+                          "label": "Book Appointment",
+                          "variant": "primary"
+                        },
+                        "styles": {
+                          "margin": "md"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "hero-image",
+                    "type": "image",
+                    "props": {
+                      "src": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800",
+                      "alt": "Modern Dental Office",
+                      "uploadWidth": 600,
+                      "uploadHeight": 400,
+                      "objectFit": "cover"
+                    },
+                    "styles": {
+                      "radius": "xl",
+                      "shadow": "2xl",
+                      "flexBasis": "1/2",
+                      "aspectRatio": "4/3",
+                      "responsive": {
+                        "md": {
+                          "flexBasis": "full",
+                          "aspectRatio": "video-16-9"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "services-section",
+        "type": "section",
+        "styles": {
+          "padding": "4xl",
+          "background": "bg-white"
+        },
+        "children": [
+          {
+            "id": "services-container",
+            "type": "container",
+            "props": {
+              "maxWidth": "lg",
+              "center": true
+            },
+            "styles": {
+              "padding": "md"
+            },
+            "children": [
+              {
+                "id": "services-title",
+                "type": "text",
+                "props": {
+                  "tag": "h2",
+                  "content": "Our Services"
+                },
+                "styles": {
+                  "typography": "heading-md",
+                  "color": "brand-900",
+                  "margin": "2xl",
+                  "textAlign": "center"
+                }
+              },
+              {
+                "id": "services-grid",
+                "type": "grid",
+                "props": {
+                  "columns": 3
+                },
+                "styles": {
+                  "gap": "xl",
+                  "responsive": {
+                    "md": {
+                      "columns": "2"
+                    },
+                    "sm": {
+                      "columns": "1"
+                    }
+                  }
+                },
+                "children": [
+                  {
+                    "id": "service-1",
+                    "type": "flex",
+                    "props": {
+                      "direction": "column"
+                    },
+                    "styles": {
+                      "gap": "md",
+                      "padding": "lg",
+                      "radius": "lg",
+                      "shadow": "sm",
+                      "background": "bg-surface",
+                      "borderWidth": "1",
+                      "borderColor": "border-subtle",
+                      "transition": "default",
+                      "hover": {
+                        "shadow": "lg",
+                        "borderColor": "brand-500",
+                        "background": "bg-brand-50"
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": "svc-1-title",
+                        "type": "text",
+                        "props": {
+                          "tag": "h3",
+                          "content": "Teeth Whitening"
+                        },
+                        "styles": {
+                          "typography": "heading-sm",
+                          "color": "brand-900"
+                        }
+                      },
+                      {
+                        "id": "svc-1-desc",
+                        "type": "text",
+                        "props": {
+                          "tag": "p",
+                          "content": "Get a brighter smile in just one session."
+                        },
+                        "styles": {
+                          "color": "text-secondary",
+                          "typography": "body-md"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "service-2",
+                    "type": "flex",
+                    "props": {
+                      "direction": "column"
+                    },
+                    "styles": {
+                      "gap": "md",
+                      "padding": "lg",
+                      "radius": "lg",
+                      "shadow": "sm",
+                      "background": "bg-surface",
+                      "borderWidth": "1",
+                      "borderColor": "border-subtle",
+                      "transition": "default",
+                      "hover": {
+                        "shadow": "lg",
+                        "borderColor": "brand-500",
+                        "background": "bg-brand-50"
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": "svc-2-title",
+                        "type": "text",
+                        "props": {
+                          "tag": "h3",
+                          "content": "Root Canal"
+                        },
+                        "styles": {
+                          "typography": "heading-sm",
+                          "color": "brand-900"
+                        }
+                      },
+                      {
+                        "id": "svc-2-desc",
+                        "type": "text",
+                        "props": {
+                          "tag": "p",
+                          "content": "Painless root canal treatments."
+                        },
+                        "styles": {
+                          "color": "text-secondary",
+                          "typography": "body-md"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "service-3",
+                    "type": "flex",
+                    "props": {
+                      "direction": "column"
+                    },
+                    "styles": {
+                      "gap": "md",
+                      "padding": "lg",
+                      "radius": "lg",
+                      "shadow": "sm",
+                      "background": "bg-surface",
+                      "borderWidth": "1",
+                      "borderColor": "border-subtle",
+                      "transition": "default",
+                      "hover": {
+                        "shadow": "lg",
+                        "borderColor": "brand-500",
+                        "background": "bg-brand-50"
+                      }
+                    },
+                    "children": [
+                      {
+                        "id": "svc-3-title",
+                        "type": "text",
+                        "props": {
+                          "tag": "h3",
+                          "content": "Dental Implants"
+                        },
+                        "styles": {
+                          "typography": "heading-sm",
+                          "color": "brand-900"
+                        }
+                      },
+                      {
+                        "id": "svc-3-desc",
+                        "type": "text",
+                        "props": {
+                          "tag": "p",
+                          "content": "Permanent solutions for missing teeth."
+                        },
+                        "styles": {
+                          "color": "text-secondary",
+                          "typography": "body-md"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
