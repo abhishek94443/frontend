@@ -5,7 +5,15 @@ export type NodeType =
   | 'image' 
   | 'button' 
   | 'grid' 
-  | 'container';
+  | 'container'
+  | 'heading'
+  | 'link'
+  | 'video'
+  | 'icon'
+  | 'divider'
+  | 'spacer'
+  | 'form'
+  | 'input';
 
 export interface NodeStyle {
   typography?: string;

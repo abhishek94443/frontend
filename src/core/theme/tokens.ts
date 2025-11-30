@@ -252,7 +252,16 @@ export const tokens = {
     '1/5': 'h-1/5',
     '2/5': 'h-2/5',
     '3/5': 'h-3/5',
+    '3/5': 'h-3/5',
     '4/5': 'h-4/5',
+  },
+  minHeight: {
+    '0': 'min-h-0',
+    'full': 'min-h-full',
+    'screen': 'min-h-screen',
+    'fit': 'min-h-fit',
+    'min': 'min-h-min',
+    'max': 'min-h-max',
   },
   aspectRatio: {
     'auto': 'aspect-auto',
@@ -368,6 +377,13 @@ export const tokens = {
     'center': 'text-center',
     'end': 'text-right',
     'justify': 'text-justify',
+  },
+  form: {
+    'input-sm': 'h-8 text-sm',
+    'input-md': 'h-10 text-base',
+    'input-lg': 'h-12 text-lg',
+    'focus-ring': 'focus:ring-2 focus:ring-brand-500 focus:outline-none',
+    'error-ring': 'ring-2 ring-red-500',
   }
 };
 

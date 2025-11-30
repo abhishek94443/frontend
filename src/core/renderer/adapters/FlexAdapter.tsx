@@ -43,9 +43,7 @@ export const FlexAdapter: React.FC<FlexAdapterProps> = ({ node }) => {
     wrap && 'flex-wrap'
   );
   
-  console.log('[FlexAdapter] Node styles:', JSON.stringify(node.styles));
   const styleClass = convertStyles(node.styles);
-  console.log('[FlexAdapter] Generated classes:', styleClass);
   
   return (
     <div className={clsx(baseClasses, styleClass)}>

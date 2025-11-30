@@ -160,7 +160,7 @@ The next message will contain the user's business description.
       "chart": ["#35bdf8", "#5da3f9", "#94a3b8", "#637288", "#465467"]
     },
     {
-      "name": "Classic",
+      "name": "default",
       "primary": { "color": "#153c51", "text": "#e6eff4" },
       "secondary": { "color": "#f4ebe6", "text": "#153c51" },
       "accent": { "color": "#dadef6", "text": "#131d53" },

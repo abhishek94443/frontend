@@ -29,14 +29,19 @@ export const ImageAdapter: React.FC<ImageAdapterProps> = ({ node }) => {
   }
   
   // Otherwise use fill (requires parent with position: relative)
+  // We explicitly handle aspect ratio via inline style to ensure it works even if Tailwind class is missing
+  const aspectRatio = node.styles?.aspectRatio === '4/3' ? '4 / 3' : 
+                      node.styles?.aspectRatio === '16/9' ? '16 / 9' : undefined;
+
   return (
-    <div className={clsx('relative', styleClass)}>
+    <div className={clsx('relative w-full', styleClass)}>
       <Image
         src={src}
         alt={alt}
-        fill
-        className={`object-${objectFit}`}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        width={0}
+        height={0}
+        sizes="100vw"
+        className={`w-full h-auto object-${objectFit}`}
         quality={85}
       />
     </div>

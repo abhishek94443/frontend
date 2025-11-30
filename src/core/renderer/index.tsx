@@ -6,6 +6,15 @@ import { ImageAdapter } from "./adapters/ImageAdapter";
 import { ButtonAdapter } from "./adapters/ButtonAdapter";
 import { GridAdapter } from "./adapters/GridAdapter";
 import { ContainerAdapter } from "./adapters/ContainerAdapter";
+import { HeadingAdapter } from "./adapters/HeadingAdapter";
+import { LinkAdapter } from "./adapters/LinkAdapter";
+import { VideoAdapter } from "./adapters/VideoAdapter";
+import { IconAdapter } from "./adapters/IconAdapter";
+import { DividerAdapter } from "./adapters/DividerAdapter";
+import { SpacerAdapter } from "./adapters/SpacerAdapter";
+import { FormAdapter } from "./adapters/FormAdapter";
+import { InputAdapter } from "./adapters/InputAdapter";
+import { MotionWrapper, AnimationType } from "./MotionWrapper";
 import { 
   SectionNode, 
   TextNode, 
@@ -13,7 +22,15 @@ import {
   ImageNode, 
   ButtonNode, 
   GridNode, 
-  ContainerNode 
+  ContainerNode,
+  HeadingNode,
+  LinkNode,
+  VideoNode,
+  IconNode,
+  DividerNode,
+  SpacerNode,
+  FormNode,
+  InputNode
 } from "../nodes/definitions";
 
 interface RendererProps {
@@ -28,31 +45,57 @@ export function Renderer({ nodeTree }: RendererProps) {
   return (
     <>
       {nodeTree.map((node) => {
-        switch (node.type) {
-          case 'section':
-            return <SectionAdapter key={node.id} node={node as SectionNode} />;
-          case 'text':
-            return <TextAdapter key={node.id} node={node as TextNode} />;
-          case 'flex':
-            return <FlexAdapter key={node.id} node={node as FlexNode} />;
-          case 'image':
-            return <ImageAdapter key={node.id} node={node as ImageNode} />;
-          case 'button':
-            return <ButtonAdapter key={node.id} node={node as ButtonNode} />;
-          case 'grid':
-            return <GridAdapter key={node.id} node={node as GridNode} />;
-          case 'container':
-            return <ContainerAdapter key={node.id} node={node as ContainerNode} />;
-          default:
-            return (
-              <div key={node.id} className="p-4 border border-dashed border-red-300 m-2">
-                <p className="text-red-500 font-bold">Unknown Node Type: {node.type}</p>
-                <pre className="text-xs bg-gray-100 p-2 overflow-auto">
-                  {JSON.stringify(node, null, 2)}
-                </pre>
-              </div>
-            );
-        }
+        const animation = node.styles?.animation as AnimationType | undefined;
+        
+        const content = (() => {
+          switch (node.type) {
+            case 'section':
+              return <SectionAdapter node={node as SectionNode} />;
+            case 'text':
+              return <TextAdapter node={node as TextNode} />;
+            case 'flex':
+              return <FlexAdapter node={node as FlexNode} />;
+            case 'image':
+              return <ImageAdapter node={node as ImageNode} />;
+            case 'button':
+              return <ButtonAdapter node={node as ButtonNode} />;
+            case 'grid':
+              return <GridAdapter node={node as GridNode} />;
+            case 'container':
+              return <ContainerAdapter node={node as ContainerNode} />;
+            case 'heading':
+              return <HeadingAdapter node={node as HeadingNode} />;
+            case 'link':
+              return <LinkAdapter node={node as LinkNode} />;
+            case 'video':
+              return <VideoAdapter node={node as VideoNode} />;
+            case 'icon':
+              return <IconAdapter node={node as IconNode} />;
+            case 'divider':
+              return <DividerAdapter node={node as DividerNode} />;
+            case 'spacer':
+              return <SpacerAdapter node={node as SpacerNode} />;
+            case 'form':
+              return <FormAdapter node={node as FormNode} />;
+            case 'input':
+              return <InputAdapter node={node as InputNode} />;
+            default:
+              return (
+                <div className="p-4 border border-dashed border-red-300 m-2">
+                  <p className="text-red-500 font-bold">Unknown Node Type: {node.type}</p>
+                  <pre className="text-xs bg-gray-100 p-2 overflow-auto">
+                    {JSON.stringify(node, null, 2)}
+                  </pre>
+                </div>
+              );
+          }
+        })();
+
+        return (
+          <MotionWrapper key={node.id} animation={animation}>
+            {content}
+          </MotionWrapper>
+        );
       })}
     </>
   );

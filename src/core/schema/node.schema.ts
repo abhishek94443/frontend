@@ -9,7 +9,14 @@ const BaseStylesShape = {
   typography: makeEnum(tokens.typography).optional(),
   fontSize: makeEnum(tokens.fontSize).optional(),
   color: makeEnum(tokens.colors).optional(),
+  
+  // Background
   background: makeEnum(tokens.backgrounds).optional(),
+  backgroundImage: z.string().optional(),
+  backgroundSize: z.enum(['auto', 'cover', 'contain']).optional(),
+  backgroundPosition: z.enum(['center', 'top', 'bottom', 'left', 'right']).optional(),
+  backgroundRepeat: z.enum(['no-repeat', 'repeat', 'repeat-x', 'repeat-y']).optional(),
+
   padding: makeEnum(tokens.spacing).optional(),
   margin: makeEnum(tokens.spacing).optional(),
   gap: makeEnum(tokens.spacing).optional(),
@@ -20,6 +27,7 @@ const BaseStylesShape = {
   maxWidth: makeEnum(tokens.maxWidth).optional(),
   width: z.union([makeEnum(tokens.width), z.string()]).optional(),
   height: z.union([makeEnum(tokens.height), z.string()]).optional(),
+  minHeight: z.union([makeEnum(tokens.minHeight), z.string()]).optional(),
   opacity: makeEnum(tokens.opacity).optional(),
   zIndex: makeEnum(tokens.zIndex).optional(),
   textAlign: z.enum(['left', 'center', 'right', 'justify']).optional(),
@@ -43,6 +51,9 @@ const BaseStylesShape = {
   columns: makeEnum(tokens.grid.columns).optional(), // Canonical
   gridColumns: makeEnum(tokens.grid.columns).optional(), // Deprecated alias
   gridGap: makeEnum(tokens.grid.gap).optional(),
+  
+  // Animation
+  animation: z.enum(['none', 'fade-in', 'slide-up', 'slide-down', 'scale-up', 'scale-down']).optional(),
 };
 
 // We need a lazy schema to handle recursion for responsive/hover
@@ -134,6 +145,83 @@ export const ContainerNodeSchema = BaseNodeSchema.extend({
   children: z.lazy(() => z.array(SiteNodeSchema)).optional(),
 });
 
+export const HeadingNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("heading"),
+  props: z.object({
+    content: z.string(),
+    level: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4), z.literal(5), z.literal(6)]).optional(),
+  }).optional(),
+});
+
+export const LinkNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("link"),
+  props: z.object({
+    label: z.string(),
+    href: z.string(),
+    target: z.enum(["_blank", "_self"]).optional(),
+  }).optional(),
+});
+
+export const VideoNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("video"),
+  props: z.object({
+    src: z.string(),
+    poster: z.string().optional(),
+    controls: z.boolean().optional(),
+    autoplay: z.boolean().optional(),
+    loop: z.boolean().optional(),
+    muted: z.boolean().optional(),
+  }).optional(),
+});
+
+export const IconNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("icon"),
+  props: z.object({
+    name: z.string(),
+    size: z.union([z.number(), z.string()]).optional(),
+    color: z.string().optional(),
+  }).optional(),
+});
+
+export const DividerNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("divider"),
+  props: z.object({
+    orientation: z.enum(["horizontal", "vertical"]).optional(),
+    thickness: z.union([z.number(), z.string()]).optional(),
+    color: z.string().optional(),
+  }).optional(),
+});
+
+export const SpacerNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("spacer"),
+  props: z.object({
+    size: z.union([z.number(), z.string()]),
+    axis: z.enum(["horizontal", "vertical"]).optional(),
+  }).optional(),
+});
+
+export const FormNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("form"),
+  props: z.object({
+    action: z.string().optional(),
+    method: z.enum(["GET", "POST"]).optional(),
+    onSubmit: z.string().optional(),
+  }).optional(),
+  children: z.lazy(() => z.array(SiteNodeSchema)).optional(),
+});
+
+export const InputNodeSchema = BaseNodeSchema.extend({
+  type: z.literal("input"),
+  props: z.object({
+    name: z.string(),
+    type: z.enum(["text", "email", "password", "number", "tel", "url", "date", "textarea"]).optional(),
+    placeholder: z.string().optional(),
+    required: z.boolean().optional(),
+    label: z.string().optional(),
+    defaultValue: z.string().optional(),
+  }).optional(),
+});
+
 // Union of all node types
 export const SiteNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.union([
@@ -143,7 +231,15 @@ export const SiteNodeSchema: z.ZodType<any> = z.lazy(() =>
     ImageNodeSchema,
     ButtonNodeSchema,
     GridNodeSchema,
-    ContainerNodeSchema
+    ContainerNodeSchema,
+    HeadingNodeSchema,
+    LinkNodeSchema,
+    VideoNodeSchema,
+    IconNodeSchema,
+    DividerNodeSchema,
+    SpacerNodeSchema,
+    FormNodeSchema,
+    InputNodeSchema
   ])
 );
 

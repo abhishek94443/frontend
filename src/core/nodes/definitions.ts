@@ -66,3 +66,79 @@ export interface ContainerNode extends BaseNode {
     center?: boolean;
   };
 }
+
+export interface HeadingNode extends BaseNode {
+  type: 'heading';
+  props?: {
+    content: string;
+    level?: 1 | 2 | 3 | 4 | 5 | 6;
+  };
+}
+
+export interface LinkNode extends BaseNode {
+  type: 'link';
+  props?: {
+    label: string;
+    href: string;
+    target?: '_blank' | '_self';
+  };
+}
+
+export interface VideoNode extends BaseNode {
+  type: 'video';
+  props?: {
+    src: string;
+    poster?: string;
+    controls?: boolean;
+    autoplay?: boolean;
+    loop?: boolean;
+    muted?: boolean;
+  };
+}
+
+export interface IconNode extends BaseNode {
+  type: 'icon';
+  props?: {
+    name: string;
+    size?: number | string;
+    color?: string;
+  };
+}
+
+export interface DividerNode extends BaseNode {
+  type: 'divider';
+  props?: {
+    orientation?: 'horizontal' | 'vertical';
+    thickness?: number | string;
+    color?: string;
+  };
+}
+
+export interface SpacerNode extends BaseNode {
+  type: 'spacer';
+  props?: {
+    size: number | string;
+    axis?: 'horizontal' | 'vertical';
+  };
+}
+
+export interface FormNode extends BaseNode {
+  type: 'form';
+  props?: {
+    action?: string;
+    method?: 'GET' | 'POST';
+    onSubmit?: string;
+  };
+}
+
+export interface InputNode extends BaseNode {
+  type: 'input';
+  props?: {
+    name: string;
+    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'date' | 'textarea';
+    placeholder?: string;
+    required?: boolean;
+    label?: string;
+    defaultValue?: string;
+  };
+}

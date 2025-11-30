@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { ButtonNode } from '@/core/nodes/definitions';
 import { clsx } from 'clsx';

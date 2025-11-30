@@ -4,18 +4,10 @@ import { clsx } from "clsx";
 export interface NodeStyles {
   typography?: keyof typeof tokens.typography;
   fontSize?: keyof typeof tokens.fontSize;
-  color?: keyof typeof tokens.colors;
-  background?: keyof typeof tokens.backgrounds;
-  padding?: keyof typeof tokens.spacing;
-  margin?: keyof typeof tokens.spacing;
-  gap?: keyof typeof tokens.spacing;
-  sectionPadding?: keyof typeof tokens.sectionPadding;
-  containerPadding?: keyof typeof tokens.containerPadding;
-  radius?: keyof typeof tokens.radius;
-  shadow?: keyof typeof tokens.shadow;
   maxWidth?: keyof typeof tokens.maxWidth;
   width?: keyof typeof tokens.width | string;
   height?: keyof typeof tokens.height | string;
+  minHeight?: keyof typeof tokens.minHeight | string;
   opacity?: keyof typeof tokens.opacity;
   zIndex?: keyof typeof tokens.zIndex;
   textAlign?: 'left' | 'center' | 'right' | 'justify';
@@ -23,6 +15,21 @@ export interface NodeStyles {
   flexBasis?: 'full' | '1/2' | '1/3' | '2/3' | '1/4' | '3/4' | 'auto';
   flexGrow?: boolean;
   flexShrink?: boolean;
+  
+  // Spacing & Layout
+  padding?: keyof typeof tokens.spacing;
+  margin?: keyof typeof tokens.spacing;
+  gap?: keyof typeof tokens.spacing;
+  sectionPadding?: keyof typeof tokens.sectionPadding;
+  containerPadding?: keyof typeof tokens.containerPadding;
+
+  // Colors
+  color?: keyof typeof tokens.colors;
+  background?: keyof typeof tokens.backgrounds;
+
+  // Visuals
+  radius?: keyof typeof tokens.radius;
+  shadow?: keyof typeof tokens.shadow;
   
   // Support BOTH for maximum compatibility
   direction?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
@@ -47,6 +54,15 @@ export interface NodeStyles {
   gridColumns?: keyof typeof tokens.grid.columns;
   gridGap?: keyof typeof tokens.grid.gap;
 
+  // Background Image (Inline)
+  backgroundImage?: string;
+  backgroundSize?: 'auto' | 'cover' | 'contain';
+  backgroundPosition?: 'center' | 'top' | 'bottom' | 'left' | 'right';
+  backgroundRepeat?: 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y';
+
+  // Animation
+  animation?: 'none' | 'fade-in' | 'slide-up' | 'slide-down' | 'scale-up' | 'scale-down';
+
   // Responsive & Hover (Recursive)
   responsive?: {
     sm?: Partial<NodeStyles>;
@@ -56,8 +72,6 @@ export interface NodeStyles {
     '2xl'?: Partial<NodeStyles>;
   };
   hover?: Partial<NodeStyles>;
-  
-  [key: string]: any;
 }
 
 // Helper maps
@@ -190,6 +204,10 @@ function convertSingleStyle(styles: Partial<NodeStyles>, prefix: string = ""): s
     const h = tokens.height[styles.height as keyof typeof tokens.height] || styles.height;
     classes.push(`${p}${h}`);
   }
+  if (styles.minHeight) {
+    const mh = tokens.minHeight[styles.minHeight as keyof typeof tokens.minHeight] || styles.minHeight;
+    classes.push(`${p}${mh}`);
+  }
   if (styles.maxWidth && tokens.maxWidth[styles.maxWidth]) {
     classes.push(`${p}${tokens.maxWidth[styles.maxWidth]}`);
   }
@@ -293,27 +311,30 @@ export function convertStyles(styles?: NodeStyles): string {
 
   // Handle Responsive
   if (styles.responsive) {
-    if (styles.responsive.sm) {
-      classes = classes.concat(convertSingleStyle(styles.responsive.sm, 'sm'));
+    for (const [breakpoint, responsiveStyles] of Object.entries(styles.responsive)) {
+      if (responsiveStyles) {
+        const responsiveClasses = convertSingleStyle(responsiveStyles, breakpoint);
+        classes.push(...responsiveClasses);
+      }
     }
-    if (styles.responsive.md) {
-      classes = classes.concat(convertSingleStyle(styles.responsive.md, 'md'));
-    }
-    if (styles.responsive.lg) {
-      classes = classes.concat(convertSingleStyle(styles.responsive.lg, 'lg'));
-    }
-    if (styles.responsive.xl) {
-      classes = classes.concat(convertSingleStyle(styles.responsive.xl, 'xl'));
-    }
-    if (styles.responsive['2xl']) {
-      classes = classes.concat(convertSingleStyle(styles.responsive['2xl'], '2xl'));
-    }
-  }
-
-  // Handle Hover
-  if (styles.hover) {
-    classes = classes.concat(convertSingleStyle(styles.hover, 'hover'));
   }
 
   return clsx(classes);
+}
+
+export function convertInlineStyles(styles?: NodeStyles): React.CSSProperties {
+  if (!styles) return {};
+
+  const inline: React.CSSProperties = {};
+
+  if (styles.backgroundImage) {
+    inline.backgroundImage = styles.backgroundImage.startsWith('http') 
+      ? `url('${styles.backgroundImage}')` 
+      : styles.backgroundImage;
+  }
+  if (styles.backgroundSize) inline.backgroundSize = styles.backgroundSize;
+  if (styles.backgroundPosition) inline.backgroundPosition = styles.backgroundPosition;
+  if (styles.backgroundRepeat) inline.backgroundRepeat = styles.backgroundRepeat;
+
+  return inline;
 }

@@ -1,125 +1,153 @@
 {
-  "name": "Sunshine Dental Clinic",
+  "name": "Sunshine Dental",
   "slug": "sunshine-dental",
   "websiteConfig": {
     "schemaVersion": "1.0.0",
+    "theme": {
+      "name": "Clinical Clean",
+      "tokens": {
+        "primary": "#0d9488",
+        "primaryText": "#ffffff",
+        "secondary": "#f0fdfa",
+        "secondaryText": "#0f766e",
+        "accent": "#f0fdfa",
+        "accentText": "#0d9488",
+        "background": "#ffffff",
+        "text": "#1e293b",
+        "card": "#ffffff",
+        "cardText": "#1e293b",
+        "popover": "#ffffff",
+        "popoverText": "#1e293b",
+        "muted": "#f1f5f9",
+        "mutedText": "#64748b",
+        "destructive": "#ef4444",
+        "destructiveText": "#ffffff",
+        "border": "#e2e8f0",
+        "input": "#e2e8f0",
+        "focusRing": "#0d9488",
+        "chart": {
+          "chart1": "#0d9488",
+          "chart2": "#14b8a6",
+          "chart3": "#2dd4bf",
+          "chart4": "#5eead4",
+          "chart5": "#99f6e4"
+        }
+      }
+    },
+    "fonts": {
+      "sans": "Inter",
+      "serif": "Merriweather",
+      "mono": "JetBrains Mono"
+    },
     "tree": [
       {
         "id": "hero-section",
         "type": "section",
         "styles": {
-          "background": "bg-brand-50",
-          "padding": "3xl"
+          "background": "bg-white",
+          "backgroundImage": "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=2668",
+          "backgroundSize": "cover",
+          "backgroundPosition": "center",
+          "sectionPadding": "none",
+          "minHeight": "screen",
+          "animation": "fade-in"
         },
         "children": [
           {
-            "id": "hero-container",
+            "id": "navbar-container",
             "type": "container",
-            "props": {
-              "maxWidth": "xl",
-              "center": true
-            },
-            "styles": {
-              "padding": "md"
-            },
+            "props": { "maxWidth": "xl", "center": true },
+            "styles": { "padding": "md", "animation": "slide-down" },
             "children": [
               {
-                "id": "hero-flex",
+                "id": "navbar-flex",
                 "type": "flex",
-                "props": {
-                  "direction": "row",
-                  "align": "center",
-                  "justify": "between",
-                  "wrap": false
-                },
-                "styles": {
-                  "gap": "xl",
-                  "responsive": {
-                    "md": {
-                      "flex": "1",
-                      "flexDirection": "column",
-                      "gap": "lg"
-                    }
-                  }
-                },
+                "props": { "direction": "row", "align": "center", "justify": "between" },
                 "children": [
                   {
-                    "id": "hero-text-col",
+                    "id": "nav-brand",
                     "type": "flex",
-                    "props": {
-                      "direction": "column"
-                    },
-                    "styles": {
-                      "gap": "md",
-                      "flexBasis": "1/2",
-                      "responsive": {
-                        "md": {
-                          "flexBasis": "full",
-                          "alignItems": "center",
-                          "textAlign": "center"
-                        }
-                      }
-                    },
+                    "props": { "align": "center" },
+                    "styles": { "gap": "xs" },
                     "children": [
-                      {
-                        "id": "hero-title",
-                        "type": "text",
-                        "props": {
-                          "tag": "h1",
-                          "content": "Modern Dental Care for Your Family"
-                        },
-                        "styles": {
-                          "typography": "display-sm",
-                          "color": "brand-900"
-                        }
-                      },
-                      {
-                        "id": "hero-desc",
-                        "type": "text",
-                        "props": {
-                          "tag": "p",
-                          "content": "Experience painless treatments and a brighter smile with our state-of-the-art technology."
-                        },
-                        "styles": {
-                          "typography": "lead",
-                          "color": "brand-700"
-                        }
-                      },
-                      {
-                        "id": "hero-cta",
-                        "type": "button",
-                        "props": {
-                          "label": "Book Appointment",
-                          "variant": "primary"
-                        },
-                        "styles": {
-                          "margin": "md"
-                        }
-                      }
+                      { "id": "nav-logo-icon", "type": "icon", "props": { "name": "Smile", "size": 20, "color": "#0d9488" } },
+                      { "id": "nav-logo-text", "type": "text", "props": { "content": "Sunshine Dental", "tag": "span" }, "styles": { "fontWeight": "medium", "color": "neutral-800" } }
                     ]
                   },
                   {
-                    "id": "hero-image",
-                    "type": "image",
-                    "props": {
-                      "src": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=800",
-                      "alt": "Modern Dental Office",
-                      "uploadWidth": 600,
-                      "uploadHeight": 400,
-                      "objectFit": "cover"
-                    },
-                    "styles": {
-                      "radius": "xl",
-                      "shadow": "2xl",
-                      "flexBasis": "1/2",
-                      "aspectRatio": "4/3",
-                      "responsive": {
-                        "md": {
-                          "flexBasis": "full",
-                          "aspectRatio": "video-16-9"
-                        }
+                    "id": "nav-links",
+                    "type": "flex",
+                    "props": { "align": "center" },
+                    "styles": { "gap": "lg", "responsive": { "sm": { "display": "none" }, "md": { "display": "flex" } } },
+                    "children": [
+                      { "id": "nav-link-1", "type": "link", "props": { "label": "Services", "href": "#services" }, "styles": { "color": "neutral-600", "fontSize": "sm", "fontWeight": "medium" } },
+                      { "id": "nav-link-2", "type": "link", "props": { "label": "Our Team", "href": "#team" }, "styles": { "color": "neutral-600", "fontSize": "sm", "fontWeight": "medium" } },
+                      { "id": "nav-link-3", "type": "link", "props": { "label": "Patients", "href": "#patients" }, "styles": { "color": "neutral-600", "fontSize": "sm", "fontWeight": "medium" } },
+                      { "id": "nav-link-4", "type": "link", "props": { "label": "Blog", "href": "#blog" }, "styles": { "color": "neutral-600", "fontSize": "sm", "fontWeight": "medium" } },
+                      { "id": "nav-link-5", "type": "link", "props": { "label": "Contact", "href": "#contact" }, "styles": { "color": "neutral-600", "fontSize": "sm", "fontWeight": "medium" } }
+                    ]
+                  },
+                  {
+                    "id": "nav-cta",
+                    "type": "button",
+                    "props": { "label": "Book Now", "variant": "primary" },
+                    "styles": { "radius": "full", "padding": "sm", "fontSize": "sm", "background": "bg-brand-600", "color": "text-white" }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "hero-content-container",
+            "type": "container",
+            "props": { "maxWidth": "xl", "center": true },
+            "styles": { "padding": "2xl", "marginTop": "3xl", "animation": "slide-up" },
+            "children": [
+              {
+                "id": "hero-content-flex",
+                "type": "flex",
+                "props": { "direction": "column", "align": "center" },
+                "styles": { "gap": "xl", "textAlign": "center" },
+                "children": [
+                  {
+                    "id": "hero-logo-center",
+                    "type": "flex",
+                    "props": { "align": "center" },
+                    "styles": { "gap": "xs", "marginBottom": "md" },
+                    "children": [
+                      { "id": "hero-center-icon", "type": "icon", "props": { "name": "Smile", "size": 24, "color": "#0d9488" } },
+                      { "id": "hero-center-text", "type": "text", "props": { "content": "Sunshine Dental", "tag": "span" }, "styles": { "fontSize": "lg", "color": "neutral-600" } }
+                    ]
+                  },
+                  {
+                    "id": "hero-heading-wrapper",
+                    "type": "flex",
+                    "props": { "direction": "column", "align": "center" },
+                    "styles": { "gap": "none" },
+                    "children": [
+                      { "id": "hero-h1-1", "type": "heading", "props": { "content": "Radiant smiles", "level": 1 }, "styles": { "typography": "display-2xl", "fontWeight": "bold", "color": "neutral-900", "lineHeight": "tight" } },
+                      { "id": "hero-h1-2", "type": "heading", "props": { "content": "start right here.", "level": 1 }, "styles": { "typography": "display-2xl", "fontWeight": "bold", "color": "neutral-600", "lineHeight": "tight" } }
+                    ]
+                  },
+                  {
+                    "id": "hero-actions",
+                    "type": "flex",
+                    "props": { "align": "center", "justify": "center" },
+                    "styles": { "gap": "md", "marginTop": "xl" },
+                    "children": [
+                      {
+                        "id": "btn-download-win",
+                        "type": "button",
+                        "props": { "label": "Book Online", "variant": "primary" },
+                        "styles": { "radius": "full", "padding": "md", "background": "bg-brand-600", "color": "text-white", "fontSize": "md" }
+                      },
+                      {
+                        "id": "btn-explore",
+                        "type": "button",
+                        "props": { "label": "Our Services", "variant": "secondary" },
+                        "styles": { "radius": "full", "padding": "md", "background": "bg-white", "color": "text-brand-600", "fontSize": "md" }
                       }
-                    }
+                    ]
                   }
                 ]
               }
@@ -130,198 +158,160 @@
       {
         "id": "services-section",
         "type": "section",
-        "styles": {
-          "padding": "4xl",
-          "background": "bg-white"
-        },
+        "styles": { "background": "bg-neutral-50", "sectionPadding": "xl" },
         "children": [
           {
             "id": "services-container",
             "type": "container",
-            "props": {
-              "maxWidth": "lg",
-              "center": true
-            },
-            "styles": {
-              "padding": "md"
-            },
+            "props": { "maxWidth": "xl", "center": true },
             "children": [
               {
-                "id": "services-title",
-                "type": "text",
-                "props": {
-                  "tag": "h2",
-                  "content": "Our Services"
-                },
-                "styles": {
-                  "typography": "heading-md",
-                  "color": "brand-900",
-                  "margin": "2xl",
-                  "textAlign": "center"
-                }
+                "id": "services-header",
+                "type": "flex",
+                "props": { "direction": "column", "align": "center" },
+                "styles": { "marginBottom": "xl", "textAlign": "center", "gap": "sm", "animation": "fade-in" },
+                "children": [
+                  { "id": "services-eyebrow", "type": "text", "props": { "content": "Our Expertise", "tag": "span" }, "styles": { "typography": "eyebrow", "color": "brand-600" } },
+                  { "id": "services-title", "type": "heading", "props": { "content": "Comprehensive Care", "level": 2 }, "styles": { "typography": "heading-xl", "color": "neutral-900" } },
+                  { "id": "services-desc", "type": "text", "props": { "content": "From routine checkups to advanced cosmetic procedures, we have you covered.", "tag": "p" }, "styles": { "typography": "body-lg", "color": "neutral-600", "maxWidth": "prose" } }
+                ]
               },
               {
                 "id": "services-grid",
                 "type": "grid",
-                "props": {
-                  "columns": 3
-                },
-                "styles": {
-                  "gap": "xl",
-                  "responsive": {
-                    "md": {
-                      "columns": "2"
-                    },
-                    "sm": {
-                      "columns": "1"
-                    }
-                  }
-                },
+                "props": { "columns": 3 },
+                "styles": { "gap": "lg", "responsive": { "sm": { "columns": "1" }, "md": { "columns": "2" }, "lg": { "columns": "3" } } },
                 "children": [
                   {
-                    "id": "service-1",
+                    "id": "service-card-1",
                     "type": "flex",
-                    "props": {
-                      "direction": "column"
-                    },
-                    "styles": {
-                      "gap": "md",
-                      "padding": "lg",
-                      "radius": "lg",
-                      "shadow": "sm",
-                      "background": "bg-surface",
-                      "borderWidth": "1",
-                      "borderColor": "border-subtle",
-                      "transition": "default",
-                      "hover": {
-                        "shadow": "lg",
-                        "borderColor": "brand-500",
-                        "background": "bg-brand-50"
-                      }
-                    },
+                    "props": { "direction": "column" },
+                    "styles": { "background": "bg-white", "padding": "lg", "radius": "xl", "shadow": "sm", "gap": "md", "animation": "slide-up" },
+                    "children": [
+                      { "id": "svc-icon-1", "type": "icon", "props": { "name": "Sparkles", "size": 32, "color": "#0d9488" } },
+                      { "id": "svc-title-1", "type": "heading", "props": { "content": "Teeth Whitening", "level": 3 }, "styles": { "typography": "heading-md" } },
+                      { "id": "svc-text-1", "type": "text", "props": { "content": "Professional whitening treatments for a brighter, more confident smile in just one visit.", "tag": "p" }, "styles": { "color": "neutral-600" } }
+                    ]
+                  },
+                  {
+                    "id": "service-card-2",
+                    "type": "flex",
+                    "props": { "direction": "column" },
+                    "styles": { "background": "bg-white", "padding": "lg", "radius": "xl", "shadow": "sm", "gap": "md", "animation": "slide-up" },
+                    "children": [
+                      { "id": "svc-icon-2", "type": "icon", "props": { "name": "ShieldCheck", "size": 32, "color": "#0d9488" } },
+                      { "id": "svc-title-2", "type": "heading", "props": { "content": "Preventive Care", "level": 3 }, "styles": { "typography": "heading-md" } },
+                      { "id": "svc-text-2", "type": "text", "props": { "content": "Regular checkups, cleanings, and digital X-rays to keep your oral health on track.", "tag": "p" }, "styles": { "color": "neutral-600" } }
+                    ]
+                  },
+                  {
+                    "id": "service-card-3",
+                    "type": "flex",
+                    "props": { "direction": "column" },
+                    "styles": { "background": "bg-white", "padding": "lg", "radius": "xl", "shadow": "sm", "gap": "md", "animation": "slide-up" },
+                    "children": [
+                      { "id": "svc-icon-3", "type": "icon", "props": { "name": "HeartPulse", "size": 32, "color": "#0d9488" } },
+                      { "id": "svc-title-3", "type": "heading", "props": { "content": "Emergency Dental", "level": 3 }, "styles": { "typography": "heading-md" } },
+                      { "id": "svc-text-3", "type": "text", "props": { "content": "Same-day appointments for toothaches, chips, and other urgent dental needs.", "tag": "p" }, "styles": { "color": "neutral-600" } }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "about-section",
+        "type": "section",
+        "styles": { "background": "bg-white", "sectionPadding": "xl" },
+        "children": [
+          {
+            "id": "about-container",
+            "type": "container",
+            "props": { "maxWidth": "xl", "center": true },
+            "children": [
+              {
+                "id": "about-flex",
+                "type": "flex",
+                "props": { "direction": "row", "align": "center" },
+                "styles": { "gap": "2xl", "responsive": { "sm": { "direction": "column" } } },
+                "children": [
+                  {
+                    "id": "about-image-col",
+                    "type": "flex",
+                    "styles": { "flex": "1", "width": "full" },
                     "children": [
                       {
-                        "id": "svc-1-title",
-                        "type": "text",
-                        "props": {
-                          "tag": "h3",
-                          "content": "Teeth Whitening"
-                        },
-                        "styles": {
-                          "typography": "heading-sm",
-                          "color": "brand-900"
-                        }
-                      },
-                      {
-                        "id": "svc-1-desc",
-                        "type": "text",
-                        "props": {
-                          "tag": "p",
-                          "content": "Get a brighter smile in just one session."
-                        },
-                        "styles": {
-                          "color": "text-secondary",
-                          "typography": "body-md"
-                        }
+                        "id": "about-img",
+                        "type": "image",
+                        "props": { "src": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&q=80&w=1000", "alt": "Friendly Dentist", "objectFit": "cover" },
+                        "styles": { "radius": "2xl", "aspectRatio": "4/3", "shadow": "lg" }
                       }
                     ]
                   },
                   {
-                    "id": "service-2",
+                    "id": "about-text-col",
                     "type": "flex",
-                    "props": {
-                      "direction": "column"
-                    },
-                    "styles": {
-                      "gap": "md",
-                      "padding": "lg",
-                      "radius": "lg",
-                      "shadow": "sm",
-                      "background": "bg-surface",
-                      "borderWidth": "1",
-                      "borderColor": "border-subtle",
-                      "transition": "default",
-                      "hover": {
-                        "shadow": "lg",
-                        "borderColor": "brand-500",
-                        "background": "bg-brand-50"
-                      }
-                    },
+                    "props": { "direction": "column" },
+                    "styles": { "flex": "1", "gap": "md" },
                     "children": [
+                      { "id": "about-eyebrow", "type": "text", "props": { "content": "About Us", "tag": "span" }, "styles": { "typography": "eyebrow", "color": "brand-600" } },
+                      { "id": "about-heading", "type": "heading", "props": { "content": "We treat you like family.", "level": 2 }, "styles": { "typography": "heading-xl", "color": "neutral-900" } },
+                      { "id": "about-p1", "type": "text", "props": { "content": "At Sunshine Dental, we believe that a visit to the dentist should be a positive, comfortable experience. Our state-of-the-art facility is designed with your relaxation in mind.", "tag": "p" }, "styles": { "typography": "body-lg", "color": "neutral-600" } },
+                      { "id": "about-p2", "type": "text", "props": { "content": "Dr. Sarah Sun and her team are dedicated to providing the highest quality care using the latest technology.", "tag": "p" }, "styles": { "typography": "body-lg", "color": "neutral-600" } },
                       {
-                        "id": "svc-2-title",
-                        "type": "text",
-                        "props": {
-                          "tag": "h3",
-                          "content": "Root Canal"
-                        },
-                        "styles": {
-                          "typography": "heading-sm",
-                          "color": "brand-900"
-                        }
-                      },
-                      {
-                        "id": "svc-2-desc",
-                        "type": "text",
-                        "props": {
-                          "tag": "p",
-                          "content": "Painless root canal treatments."
-                        },
-                        "styles": {
-                          "color": "text-secondary",
-                          "typography": "body-md"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "id": "service-3",
-                    "type": "flex",
-                    "props": {
-                      "direction": "column"
-                    },
-                    "styles": {
-                      "gap": "md",
-                      "padding": "lg",
-                      "radius": "lg",
-                      "shadow": "sm",
-                      "background": "bg-surface",
-                      "borderWidth": "1",
-                      "borderColor": "border-subtle",
-                      "transition": "default",
-                      "hover": {
-                        "shadow": "lg",
-                        "borderColor": "brand-500",
-                        "background": "bg-brand-50"
-                      }
-                    },
-                    "children": [
-                      {
-                        "id": "svc-3-title",
-                        "type": "text",
-                        "props": {
-                          "tag": "h3",
-                          "content": "Dental Implants"
-                        },
-                        "styles": {
-                          "typography": "heading-sm",
-                          "color": "brand-900"
-                        }
-                      },
-                      {
-                        "id": "svc-3-desc",
-                        "type": "text",
-                        "props": {
-                          "tag": "p",
-                          "content": "Permanent solutions for missing teeth."
-                        },
-                        "styles": {
-                          "color": "text-secondary",
-                          "typography": "body-md"
-                        }
+                        "id": "about-btn",
+                        "type": "button",
+                        "props": { "label": "Meet the Team", "variant": "outline" },
+                        "styles": { "width": "fit", "marginTop": "md" }
                       }
                     ]
                   }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "footer-section",
+        "type": "section",
+        "styles": { "background": "bg-neutral-900", "sectionPadding": "lg" },
+        "children": [
+          {
+            "id": "footer-container",
+            "type": "container",
+            "props": { "maxWidth": "xl", "center": true },
+            "children": [
+              {
+                "id": "footer-flex",
+                "type": "flex",
+                "props": { "direction": "column", "align": "center" },
+                "styles": { "gap": "lg", "textAlign": "center" },
+                "children": [
+                  {
+                    "id": "footer-brand",
+                    "type": "flex",
+                    "props": { "align": "center" },
+                    "styles": { "gap": "xs" },
+                    "children": [
+                      { "id": "footer-icon", "type": "icon", "props": { "name": "Smile", "size": 24, "color": "#ffffff" } },
+                      { "id": "footer-text", "type": "text", "props": { "content": "Sunshine Dental", "tag": "span" }, "styles": { "fontSize": "lg", "fontWeight": "bold", "color": "white" } }
+                    ]
+                  },
+                  {
+                    "id": "footer-links",
+                    "type": "flex",
+                    "props": { "direction": "row", "wrap": true, "justify": "center" },
+                    "styles": { "gap": "lg" },
+                    "children": [
+                      { "id": "ft-link-1", "type": "link", "props": { "label": "Privacy Policy", "href": "#" }, "styles": { "color": "neutral-400", "fontSize": "sm" } },
+                      { "id": "ft-link-2", "type": "link", "props": { "label": "Terms of Service", "href": "#" }, "styles": { "color": "neutral-400", "fontSize": "sm" } },
+                      { "id": "ft-link-3", "type": "link", "props": { "label": "Contact Us", "href": "#" }, "styles": { "color": "neutral-400", "fontSize": "sm" } }
+                    ]
+                  },
+                  { "id": "footer-copy", "type": "text", "props": { "content": "© 2024 Sunshine Dental. All rights reserved.", "tag": "p" }, "styles": { "color": "neutral-500", "fontSize": "sm" } }
                 ]
               }
             ]
